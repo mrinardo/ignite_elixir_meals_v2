@@ -11,17 +11,15 @@ defmodule Exmeal.Meals.UpdateTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
       response = Exmeal.update_meal(%{"id" => id, "calories" => 25})
 
       assert {:ok,
-              %Exmeal.Meal{
+              %Meal{
                 calories: 25,
-                date: ~D[2001-05-02],
-                description: "Banana",
                 id: ^id,
                 user_id: ^user_id
               }} = response
@@ -31,7 +29,7 @@ defmodule Exmeal.Meals.UpdateTest do
       id = "a6ef9b39-d638-4835-9ad7-dbe48d1257eb"
       response = Exmeal.update_meal(%{"id" => id})
 
-      assert {:error, %Exmeal.Error{result: "Meal not found", status: :not_found}} = response
+      assert {:error, %Exmeal.Error{result: _result, status: :not_found}} = response
     end
   end
 end

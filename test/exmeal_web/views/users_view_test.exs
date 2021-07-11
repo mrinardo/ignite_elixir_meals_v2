@@ -17,13 +17,11 @@ defmodule ExmealWeb.UsersViewTest do
     response = render(UsersView, "create.json", user: user)
 
     assert %{
-             user: %{
-               user: %User{
-                 cpf: "12345678900",
-                 name: "Jp",
-                 email: "jp@banana.com",
-                 id: ^id
-               }
+             user: %User{
+               cpf: "12345678901",
+               name: "Mauricio Rinardo",
+               email: "mauricio@rinardo.com",
+               id: ^id
              },
              message: "User created!"
            } = response
@@ -38,9 +36,9 @@ defmodule ExmealWeb.UsersViewTest do
 
     assert %{
              user: %User{
-               cpf: "12345678900",
-               name: "Jp",
-               email: "jp@banana.com",
+               cpf: "12345678901",
+               name: "Mauricio Rinardo",
+               email: "mauricio@rinardo.com",
                id: ^id
              }
            } = response

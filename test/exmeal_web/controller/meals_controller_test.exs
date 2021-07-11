@@ -11,37 +11,37 @@ defmodule Exmeal.MealsControllerTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       response =
         conn
         |> post(Routes.meals_path(conn, :create, params))
         |> json_response(:created)
 
-        %{"meals" => %{"meal" => %{"id" => id}}} = response
+      %{"meal" => %{"id" => id}} = response
 
       assert %{
-               "meals" => %{
-                 "meal" => %{
-                   "calories" => 20,
-                   "date" => "2001-05-02",
-                   "description" => "Banana",
-                   "id" => ^id,
-                   "user_id" => ^user_id
-                 }
+               "meal" => %{
+                 "calories" => 20,
+                 "date" => "2021-04-18T20:35:18.000000Z",
+                 "description" => "Paçoca",
+                 "id" => ^id,
+                 "user_id" => ^user_id
                },
                "message" => "Meal created!"
              } = response
     end
 
     test "when there are invalid params, returns an error", %{conn: conn} do
-      params = %{description: "Banana"}
+      user_params = build(:users_params)
+
+      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
+
+      params = %{description: "Paçoca", user_id: user_id}
 
       expected_response = %{
         "message" => %{
-          "calories" => ["can't be blank"],
-          "date" => ["can't be blank"],
-          "user_id" => ["can't be blank"]
+          "calories" => ["can't be blank"]
         }
       }
 
@@ -60,7 +60,7 @@ defmodule Exmeal.MealsControllerTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -73,7 +73,7 @@ defmodule Exmeal.MealsControllerTest do
     end
 
     test "when id not exist, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
@@ -81,7 +81,7 @@ defmodule Exmeal.MealsControllerTest do
         |> json_response(:not_found)
 
       assert %{
-               "message" => "Meal not found"
+               "message" => "Meal not found!"
              } = response
     end
   end
@@ -92,7 +92,7 @@ defmodule Exmeal.MealsControllerTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -104,8 +104,8 @@ defmodule Exmeal.MealsControllerTest do
       assert %{
                "meal" => %{
                  "calories" => 20,
-                 "date" => "2001-05-02",
-                 "description" => "Banana",
+                 "date" => "2021-04-18T20:35:18.000000Z",
+                 "description" => "Paçoca",
                  "id" => ^id,
                  "user_id" => ^user_id
                }
@@ -113,14 +113,14 @@ defmodule Exmeal.MealsControllerTest do
     end
 
     test "when not exist id, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
         |> put(Routes.meals_path(conn, :update, id))
         |> json_response(:not_found)
 
-      assert %{"message" => "Meal not found"} = response
+      assert %{"message" => "Meal not found!"} = response
     end
   end
 
@@ -130,7 +130,7 @@ defmodule Exmeal.MealsControllerTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -142,8 +142,8 @@ defmodule Exmeal.MealsControllerTest do
       assert %{
                "meal" => %{
                  "calories" => 20,
-                 "date" => "2001-05-02",
-                 "description" => "Banana",
+                 "date" => "2021-04-18T20:35:18.000000Z",
+                 "description" => "Paçoca",
                  "id" => ^id,
                  "user_id" => ^user_id
                }
@@ -151,14 +151,14 @@ defmodule Exmeal.MealsControllerTest do
     end
 
     test "when id not exist, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
         |> get(Routes.meals_path(conn, :update, id))
         |> json_response(:not_found)
 
-      assert %{"message" => "Meal not found"} = response
+      assert %{"message" => "Meal not found!"} = response
     end
   end
 end

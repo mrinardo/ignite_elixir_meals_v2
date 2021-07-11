@@ -11,14 +11,14 @@ defmodule Exmeal.Meals.CreateTest do
 
       {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meal_api_params, %{"user_id" => user_id})
 
       {:ok, %Meal{id: id} = response} = Exmeal.create_meal(params)
 
-      assert %Exmeal.Meal{
+      assert %Meal{
                calories: 20,
-               date: ~D[2001-05-02],
-               description: "Banana",
+               date: ~U[2021-04-18 20:35:18.000000Z],
+               description: "Paçoca",
                id: ^id,
                user_id: ^user_id
              } = response
@@ -27,7 +27,7 @@ defmodule Exmeal.Meals.CreateTest do
     test "when there are invalid params, returns an error" do
       params = %{
         calories: 20,
-        date: ~D[2001-05-02]
+        date: ~U[2021-04-18 20:35:18.000000Z]
       }
 
       response = Exmeal.create_meal(params)

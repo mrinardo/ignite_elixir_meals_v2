@@ -9,36 +9,34 @@ defmodule ExmealWeb.MealsViewTest do
 
   alias ExmealWeb.MealsView
 
-  test "render create.json" do
+  setup do
     user_params = build(:users_params)
 
     {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
 
-    params = build(:meals_params, %{user_id: user_id})
+    {:ok, user_id: user_id}
+  end
+
+  test "render create.json", %{user_id: user_id} do
+    params = build(:meal_api_params, %{"user_id" => user_id})
     {:ok, %Meal{id: id} = meal} = Exmeal.create_meal(params)
 
     response = render(MealsView, "create.json", meal: meal)
 
     assert %{
-             meals: %{
-               meal: %Meal{
-                 calories: 20,
-                 date: ~D[2001-05-02],
-                 description: "Banana",
-                 id: ^id,
-                 user_id: ^user_id
-               }
+             meal: %Meal{
+               calories: 20,
+               date: ~U[2021-04-18 20:35:18.000000Z],
+               description: "Paçoca",
+               id: ^id,
+               user_id: ^user_id
              },
              message: "Meal created!"
            } = response
   end
 
-  test "render meal.json" do
-    user_params = build(:users_params)
-
-    {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-    params = build(:meals_params, %{user_id: user_id})
+  test "render meal.json", %{user_id: user_id} do
+    params = build(:meal_api_params, %{"user_id" => user_id})
     {:ok, %Meal{id: id} = meal} = Exmeal.create_meal(params)
 
     response = render(MealsView, "meal.json", meal: meal)
@@ -46,8 +44,8 @@ defmodule ExmealWeb.MealsViewTest do
     assert %{
              meal: %Meal{
                calories: 20,
-               date: ~D[2001-05-02],
-               description: "Banana",
+               date: ~U[2021-04-18 20:35:18.000000Z],
+               description: "Paçoca",
                id: ^id,
                user_id: ^user_id
              }

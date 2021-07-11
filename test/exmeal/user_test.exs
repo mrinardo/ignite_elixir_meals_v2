@@ -15,12 +15,22 @@ defmodule Exmeal.UserTest do
 
       assert %Changeset{
                changes: %{
-                 cpf: "12345678900",
-                 name: "Jp",
-                 email: "jp@banana.com"
+                 cpf: "12345678901",
+                 name: "Mauricio Rinardo",
+                 email: "mauricio@rinardo.com"
                },
                valid?: true
              } = response
+    end
+
+    test "when there are invalid params, returns errors" do
+      params = build(:users_params, %{cpf: "123", email: "mauricio.rinardo.com"})
+
+      response = User.changeset(params)
+
+      expected_response = %{cpf: ["should be 11 character(s)"], email: ["has invalid format"]}
+
+      assert errors_on(response) == expected_response
     end
   end
 end

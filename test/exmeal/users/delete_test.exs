@@ -14,19 +14,21 @@ defmodule Exmeal.Users.DeleteTest do
       response = Exmeal.delete_user(id)
 
       assert {:ok,
-              %Exmeal.User{
-                cpf: "12345678900",
-                email: "jp@banana.com",
-                name: "Jp",
+              %User{
+                name: "Mauricio Rinardo",
+                email: "mauricio@rinardo.com",
+                cpf: "12345678901",
                 id: ^id
               }} = response
     end
 
     test "when an invalid id is given, returns an error" do
-      id = "a6ef9b39-d638-4835-9ad7-dbe48d1257eb"
+      id = "00000000-0000-0000-0000-000000000000"
       response = Exmeal.delete_user(id)
 
-      assert {:error, %Exmeal.Error{result: "User not found", status: :not_found}} = response
+      expected_response = Exmeal.Error.build_user_not_found_error()
+
+      assert {:error, expected_response} == response
     end
   end
 end

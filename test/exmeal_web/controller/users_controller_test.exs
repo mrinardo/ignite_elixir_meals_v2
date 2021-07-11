@@ -14,16 +14,14 @@ defmodule Exmeal.UsersControllerTest do
         |> post(Routes.users_path(conn, :create, params))
         |> json_response(:created)
 
-      %{"user" => %{"user" => %{"id" => id}}} = response
+      %{"user" => %{"id" => id}} = response
 
       assert %{
                "user" => %{
-                 "user" => %{
-                   "name" => "Jp",
-                   "email" => "jp@banana.com",
-                   "cpf" => "12345678900",
-                   "id" => ^id
-                 }
+                 "cpf" => "12345678901",
+                 "email" => "mauricio@rinardo.com",
+                 "id" => ^id,
+                 "name" => "Mauricio Rinardo"
                },
                "message" => "User created!"
              } = response
@@ -64,7 +62,7 @@ defmodule Exmeal.UsersControllerTest do
     end
 
     test "when id not exist, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
@@ -72,8 +70,8 @@ defmodule Exmeal.UsersControllerTest do
         |> json_response(:not_found)
 
       assert %{
-          "message" => "User not found"
-        } = response
+               "message" => "User not found!"
+             } = response
     end
   end
 
@@ -84,7 +82,7 @@ defmodule Exmeal.UsersControllerTest do
       {:ok, %User{id: id}} = Exmeal.create_user(params)
 
       updated_params = %{
-        name: "Jp Alves"
+        name: "J. M. Rinardo"
       }
 
       response =
@@ -92,27 +90,27 @@ defmodule Exmeal.UsersControllerTest do
         |> put(Routes.users_path(conn, :update, id, updated_params))
         |> json_response(:ok)
 
-        %{"user" => %{"id" => id}} = response
+      %{"user" => %{"id" => id}} = response
 
       assert %{
                "user" => %{
-                 "cpf" => "12345678900",
-                 "email" => "jp@banana.com",
-                 "name" => "Jp Alves",
+                 "cpf" => "12345678901",
+                 "email" => "mauricio@rinardo.com",
+                 "name" => "J. M. Rinardo",
                  "id" => ^id
                }
              } = response
     end
 
     test "when not exist id, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
         |> put(Routes.users_path(conn, :update, id))
         |> json_response(:not_found)
 
-      assert %{"message" => "User not found"} = response
+      assert %{"message" => "User not found!"} = response
     end
   end
 
@@ -127,27 +125,27 @@ defmodule Exmeal.UsersControllerTest do
         |> get(Routes.users_path(conn, :show, id))
         |> json_response(:ok)
 
-        %{"user" => %{"id" => id}} = response
+      %{"user" => %{"id" => id}} = response
 
       assert %{
                "user" => %{
-                 "cpf" => "12345678900",
-                 "email" => "jp@banana.com",
-                 "id" => ^id,
-                 "name" => "Jp"
+                 "cpf" => "12345678901",
+                 "email" => "mauricio@rinardo.com",
+                 "name" => "Mauricio Rinardo",
+                 "id" => ^id
                }
              } = response
     end
 
     test "when id not exist, return an error", %{conn: conn} do
-      id = "5e694bc0-78fc-4600-bcd0-0733b7540a6e"
+      id = "00000000-0000-0000-0000-000000000000"
 
       response =
         conn
         |> get(Routes.users_path(conn, :update, id))
         |> json_response(:not_found)
 
-      assert %{"message" => "User not found"} = response
+      assert %{"message" => "User not found!"} = response
     end
   end
 end
